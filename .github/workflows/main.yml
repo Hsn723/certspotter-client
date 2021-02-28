@@ -6,8 +6,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
       - name: Lint
-        run: make lint
+        uses: pre-commit/action@v2.0.0
+        with:
+          extra_args: --all-files
   verify:
     name: Verify
     runs-on: ubuntu-latest
@@ -24,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        go: [ '1.14, 1.15, 1.16' ]
+        go: [ '1.14', '1.15', '1.16' ]
     steps:
       - uses: actions/checkout@v2
       - name: Setup go
@@ -35,7 +38,6 @@ jobs:
         run: make test
   dry-run:
     name: Dry-run release
-    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -58,6 +60,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.PAT }}
       - name: Tag release
         run: |
           TAG="v$(cat VERSION)"
