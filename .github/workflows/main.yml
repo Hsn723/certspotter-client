@@ -71,10 +71,5 @@ jobs:
       - name: Tag release
         run: |
           TAG="v$(cat VERSION)"
-          if git show-ref --tags | grep -q "refs/tags/${TAG}$"
-          then
-            echo "Already released version, skip"
-            exit
-          fi
           git tag ${TAG}
-          git push origin ${TAG}
+          git push origin ${TAG} || true
