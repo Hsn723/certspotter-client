@@ -1,0 +1,14 @@
+project_name: certspotter-client
+before:
+  hooks:
+    - go mod download
+build:
+  skip: true
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+release:
+  prerelease: auto
