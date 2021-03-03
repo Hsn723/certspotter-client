@@ -1,6 +1,7 @@
 package api
 
 import (
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"reflect"
@@ -111,6 +112,22 @@ func TestGetIssuancesEmpty(t *testing.T) {
 	}
 	if !reflect.DeepEqual(actual, expected) {
 		t.Errorf("expected %v, got %v", expected, actual)
+	}
+}
+
+func TestGetIssuanceInvalidDomain(t *testing.T) {
+	mockClient := MockClient{
+		Content: "[]",
+	}
+	cc := CertspotterClient{
+		Client: mockClient,
+	}
+	actual, err := cc.GetIssuances("*.example.com", true, true, 0)
+	if !errors.Is(err, ErrorInvalidDomain) {
+		t.Errorf("expected %v, got %v", ErrorInvalidDomain, err)
+	}
+	if actual != nil {
+		t.Errorf("expected nil, got %v", actual)
 	}
 }
 

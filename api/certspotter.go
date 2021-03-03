@@ -5,10 +5,16 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/asaskevich/govalidator"
 )
 
 const (
 	defaultParams = "?expand=dns_names&expand=issuer&expand=cert"
+)
+
+var (
+	ErrorInvalidDomain = fmt.Errorf("an invalid domain name was provided")
 )
 
 // HTTPClient is an interface implementing for the http.Client Do function.
@@ -90,6 +96,9 @@ func (c *CertspotterClient) get(queryParams string) ([]byte, error) {
 
 // GetIssuances queries the certspotter API for new issuances.
 func (c *CertspotterClient) GetIssuances(domain string, matchWildcards, includeSubdomains bool, position uint64) ([]Issuance, error) {
+	if !govalidator.IsDNSName(domain) {
+		return nil, ErrorInvalidDomain
+	}
 	queryParams := c.getQueryParams(domain, matchWildcards, includeSubdomains, position)
 
 	body, err := c.get(queryParams)
