@@ -5,10 +5,6 @@ before:
 build:
   skip: true
 changelog:
-  sort: asc
-  filters:
-    exclude:
-      - '^docs:'
-      - '^test:'
+  use: github-native
 release:
   prerelease: auto
