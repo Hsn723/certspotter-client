@@ -135,14 +135,27 @@ func TestGetIssuancesWithResult(t *testing.T) {
 	mockClient := MockClient{
 		Content: `[
 			{
-					"id":"648494876",
-					"tbs_sha256":"b0537995114358761f330303e5b8a0d7c7319a7e458495395e07004911f91c38",
-					"dns_names":["example.com","example.edu","example.net","example.org","www.example.com","www.example.edu","www.example.net","www.example.org"],
-					"pubkey_sha256":"8bd1da95272f7fa4ffb24137fc0ed03aae67e5c4d8b3c50734e1050a7920b922",
-					"issuer":{"name":"C=US, O=DigiCert Inc, CN=DigiCert SHA2 Secure Server CA","pubkey_sha256":"e6426f344330d0a8eb080bbb7976391d976fc824b5dc16c0d15246d5148ff75c"},
-					"not_before":"2018-11-28T00:00:00-00:00",
-					"not_after":"2020-12-02T12:00:00-00:00",
-					"cert":{"type":"cert","sha256":"9250711c54de546f4370e0c3d3a3ec45bc96092a25a4a71a1afa396af7047eb8","data":"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"}
+				"id":"4326219514",
+				"tbs_sha256":"db7c55f74732269c45fda91264003b2a25adc7ff2df687252f60772850449926",
+				"cert_sha256":"20cbc0d1e87ed1d71d3b84533667ef60f22fffee634108711376dec87a38d4e2",
+				"dns_names":["certs.sandbox.sslmate.com","certs.sslmate.com","sandbox.sslmate.com","sslmate.com","www.sslmate.com"],
+				"pubkey_sha256":"1b1cebcd061ba39746a477db7b90d6871d648bd293ef50e053a6c54c5c3ac112",
+				"issuer":{
+					"friendly_name":"Sectigo",
+					"website":"https://sectigo.com/",
+					"caa_domains":["sectigo.com","comodo.com","comodoca.com","usertrust.com","trust-provider.com"],
+					"operator":{"name":"Sectigo","website":"https://sectigo.com/"},
+					"pubkey_sha256":"e1ae9c3de848ece1ba72e0d991ae4d0d9ec547c6bad1dddab9d6beb0a7e0e0d8",
+					"pubkey_der":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1nMz1tc8INAA0hdFuNY+B6I/x0HuMjDJsGz99J/LEpgPLT+NTQEMgg8Xf2Iu6bhIefsWg06t1zIlk7cHv7lQP6lMw0Aq6Tn/2YHKHxYyQdqAJrkjeocgHuP/IJo8lURvh3UGkEC0MpMWCRAIIz7S3YcPb11RFGoKacVPAXJpz9OTTG0EoKMbgn6xmrntxZ7FN3ifmgg0+1YuWMQJDgZkW7w33PGfKGioVrCSo1yfu4iYCBskHaswha6vsC6eep3BwEIc4gLw6uBK0u+QDrTBQBbwb4VCSmT3pDCg/r8uoydajotYuK3DGReEY+1vVv2Dy2A0xHS+5p3b4eTlygxfFQIDAQAB",
+					"name":"C=GB, ST=Greater Manchester, L=Salford, O=Sectigo Limited, CN=Sectigo RSA Domain Validation Secure Server CA",
+					"name_der":"MIGPMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxNzA1BgNVBAMTLlNlY3RpZ28gUlNBIERvbWFpbiBWYWxpZGF0aW9uIFNlY3VyZSBTZXJ2ZXIgQ0E="
+				},
+				"not_before":"2022-10-22T00:00:00Z",
+				"not_after":"2023-11-21T23:59:59Z",
+				"revoked":false,
+				"revocation":{"time":null,"reason":null,"checked_at":"2022-12-19T18:47:39Z"},
+				"problem_reporting":"To revoke one or more certificates issued by Sectigo for which you (i) are the Subscriber or (ii) control the domain or (iii) have in your possession the private key, you may use our automated Revocation Portal here:\u000A  ?? https://secure.sectigo.com/products/RevocationPortal\u000A\u000ATo programatically revoke one or more certificates issued by Sectigo for which you have in your possession the private key, you may use the ACME revokeCert method at this endpoint:\u000A  ?? ACME Directory: https://acme.sectigo.com/v2/keyCompromise\u000A  ?? revokeCert API: https://acme.sectigo.com/v2/keyCompromise/revokeCert\u000A\u000ATo report any other abuse, fraudulent, or malicious use of Certificates issued by Sectigo, please send email to:\u000A  ?? For Code Signing Certificates: signedmalwarealert[at]sectigo[dot]com\u000A  ?? For Other Certificates (SSL/TLS, S/MIME, etc): sslabuse[at]sectigo[dot]com",
+				"cert_der":"MIIGdDCCBVygAwIBAgIRAMFw+/O/J0geXDUaTbby3F8wDQYJKoZIhvcNAQELBQAwgY8xCzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGDAWBgNVBAoTD1NlY3RpZ28gTGltaXRlZDE3MDUGA1UEAxMuU2VjdGlnbyBSU0EgRG9tYWluIFZhbGlkYXRpb24gU2VjdXJlIFNlcnZlciBDQTAeFw0yMjEwMjIwMDAwMDBaFw0yMzExMjEyMzU5NTlaMBYxFDASBgNVBAMTC3NzbG1hdGUuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA235/3Y/E4yPAHPa37C7Fgp7KPVjjuTB5vKV9nYIJzfp7NgvDBlf7k5bZFCSsSIj2txhL0hzXBwvmy7u7CYR7CApr2Rx2UPOl7Gmlt/DmtfyKac8Iunn2ozuGZDtxq19Go4NL9jl9e9O3H/lcL/ZFqzbUNlKIOfkOYkOxM3qpQXHTXuhkeI2MJO/S4wX8y8/8uhArWQ9eh/YrtJlO9fla60kLUlQF7mtJTc+0oB3+N4eF5t2a8Pav00T6lVvH8hMhbY0nZ/tBCD6/I6yelh8cP094VRJEGWs+zcEuXpz4FsZggkhF/l+AhQ+DfgxZhno4M60kBKC8Un1BTGX5TjfjJQIDAQABo4IDQTCCAz0wHwYDVR0jBBgwFoAUjYxexFStiuF36Zv5mwXhuAGNYeEwHQYDVR0OBBYEFKg2kl8xIzdSxjOEAzlNpdpigAazMA4GA1UdDwEB/wQEAwIFoDAMBgNVHRMBAf8EAjAAMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjBJBgNVHSAEQjBAMDQGCysGAQQBsjEBAgIHMCUwIwYIKwYBBQUHAgEWF2h0dHBzOi8vc2VjdGlnby5jb20vQ1BTMAgGBmeBDAECATCBhAYIKwYBBQUHAQEEeDB2ME8GCCsGAQUFBzAChkNodHRwOi8vY3J0LnNlY3RpZ28uY29tL1NlY3RpZ29SU0FEb21haW5WYWxpZGF0aW9uU2VjdXJlU2VydmVyQ0EuY3J0MCMGCCsGAQUFBzABhhdodHRwOi8vb2NzcC5zZWN0aWdvLmNvbTCCAX4GCisGAQQB1nkCBAIEggFuBIIBagFoAHcArfe++nz/EMiLnT2cHj4YarRnKV3PsQwkyoWGNOvcgooAAAGD/Q379gAABAMASDBGAiEApW5+8JMnkoI8dsvY72sc1M5ZFnUX8P2+p0/Wnub5jUACIQDFo8WkSTaUyxe5Cu3kM6z+4s6nSuJ1oIPnOsUJNB6nYgB2AHoyjFTYty22IOo44FIe6YQWcDIThU070ivBOlejUutSAAABg/0N+8oAAAQDAEcwRQIhAPg9ReaIuGXJUOAZDUoUY0lKacBNL25629h5wOG4MfoHAiBfY5NsmD6l+rOL3bHHweqFUx5OwbTXmdNyAJvIs0B/4QB1AOg+0No+9QY1MudXKLyJa8kD08vREWvs62nhd31tBr1uAAABg/0N+5YAAAQDAEYwRAIgHYDp+ordRlS3YplybcOR+7p9XQX54vqvimTix6SmmLkCIFgf+Cwn/wupXldVnCbyDwlMND5wVRi8jvq7lu5r5MQSMGoGA1UdEQRjMGGCC3NzbG1hdGUuY29tghljZXJ0cy5zYW5kYm94LnNzbG1hdGUuY29tghFjZXJ0cy5zc2xtYXRlLmNvbYITc2FuZGJveC5zc2xtYXRlLmNvbYIPd3d3LnNzbG1hdGUuY29tMA0GCSqGSIb3DQEBCwUAA4IBAQA2A4aujT+2OOuBPOqL6KMl2c3zmru8sK/DABEkNKGu2c23wfd9p0BYFCwSUMtttBx4pvtwNcCpLUrMfvH5k1UzamFo8a//owZD0R6LfKUL4RCBDkqnWWbZD/fU413x8pextkbFkNuK2LsFXLEEe2rvs0vbpeOSdz1AEbdHxvv+7xDf2xuVibuVL3g1Hro8bbPDoIL/ntp+zShO8O3Qh/Dkpn7l5CidoipQY4O7nRx4XrxVCAjYv62vsRq7GZt3bO1AGI8L7ekAOoCz+xuLJ0yHmJmARFuYegWXywoIE5HaqnkBvQaliHjxdZXsOH70lcevwey4RNcTxIglk5nWkgIj"
 			}
 	]
 	`,
@@ -152,24 +165,47 @@ func TestGetIssuancesWithResult(t *testing.T) {
 	}
 	expected := []Issuance{
 		{
-			ID:           648494876,
-			TBSSHA256:    "b0537995114358761f330303e5b8a0d7c7319a7e458495395e07004911f91c38",
-			Domains:      []string{"example.com", "example.edu", "example.net", "example.org", "www.example.com", "www.example.edu", "www.example.net", "www.example.org"},
-			PubKeySHA256: "8bd1da95272f7fa4ffb24137fc0ed03aae67e5c4d8b3c50734e1050a7920b922",
+			ID:        4326219514,
+			TBSSHA256: "db7c55f74732269c45fda91264003b2a25adc7ff2df687252f60772850449926",
+			Domains: []string{
+				"certs.sandbox.sslmate.com",
+				"certs.sslmate.com",
+				"sandbox.sslmate.com",
+				"sslmate.com",
+				"www.sslmate.com",
+			},
+			PubKeySHA256: "1b1cebcd061ba39746a477db7b90d6871d648bd293ef50e053a6c54c5c3ac112",
 			Issuer: Issuer{
-				Name:         "C=US, O=DigiCert Inc, CN=DigiCert SHA2 Secure Server CA",
-				PubKeySHA256: "e6426f344330d0a8eb080bbb7976391d976fc824b5dc16c0d15246d5148ff75c",
+				Name:         "C=GB, ST=Greater Manchester, L=Salford, O=Sectigo Limited, CN=Sectigo RSA Domain Validation Secure Server CA",
+				PubKeySHA256: "e1ae9c3de848ece1ba72e0d991ae4d0d9ec547c6bad1dddab9d6beb0a7e0e0d8",
+				FriendlyName: "Sectigo",
+				Website:      "https://sectigo.com/",
+				CAADomains: []string{
+					"sectigo.com",
+					"comodo.com",
+					"comodoca.com",
+					"usertrust.com",
+					"trust-provider.com",
+				},
+				Operator: Operator{
+					Name:    "Sectigo",
+					Website: "https://sectigo.com/",
+				},
 			},
-			NotBefore: "2018-11-28T00:00:00-00:00",
-			NotAfter:  "2020-12-02T12:00:00-00:00",
-			Cert: Certificate{
-				Type:   "cert",
-				SHA256: "9250711c54de546f4370e0c3d3a3ec45bc96092a25a4a71a1afa396af7047eb8",
-				Data:   "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",
+			NotBefore:        "2022-10-22T00:00:00Z",
+			NotAfter:         "2023-11-21T23:59:59Z",
+			ProblemReporting: "To revoke one or more certificates issued by Sectigo for which you (i) are the Subscriber or (ii) control the domain or (iii) have in your possession the private key, you may use our automated Revocation Portal here:\u000A  ?? https://secure.sectigo.com/products/RevocationPortal\u000A\u000ATo programatically revoke one or more certificates issued by Sectigo for which you have in your possession the private key, you may use the ACME revokeCert method at this endpoint:\u000A  ?? ACME Directory: https://acme.sectigo.com/v2/keyCompromise\u000A  ?? revokeCert API: https://acme.sectigo.com/v2/keyCompromise/revokeCert\u000A\u000ATo report any other abuse, fraudulent, or malicious use of Certificates issued by Sectigo, please send email to:\u000A  ?? For Code Signing Certificates: signedmalwarealert[at]sectigo[dot]com\u000A  ?? For Other Certificates (SSL/TLS, S/MIME, etc): sslabuse[at]sectigo[dot]com",
+			Revoked:          false,
+			Revocation: Revocation{
+				CheckedAt: "2022-12-19T18:47:39Z",
+				Time:      "",
+				Reason:    nil,
 			},
+			CertSHA256: "20cbc0d1e87ed1d71d3b84533667ef60f22fffee634108711376dec87a38d4e2",
+			CertDER:    "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",
 		},
 	}
-	actual, err := cc.GetIssuances("example.com", true, true, 0)
+	actual, err := cc.GetIssuances("sslmate.com", true, true, 0)
 	if err != nil {
 		t.Fatal(err)
 	}

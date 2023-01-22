@@ -31,27 +31,50 @@ type CertspotterClient struct {
 
 // Issuance represents an issuance object for the certspotter API.
 type Issuance struct {
-	ID           uint64      `json:"id,string"`
-	TBSSHA256    string      `json:"tbs_sha256"`
-	Domains      []string    `json:"dns_names"`
-	PubKeySHA256 string      `json:"pubkey_sha256"`
-	Issuer       Issuer      `json:"issuer"`
-	NotBefore    string      `json:"not_before"`
-	NotAfter     string      `json:"not_after"`
-	Cert         Certificate `json:"cert"`
+	ID               uint64      `json:"id,string"`
+	TBSSHA256        string      `json:"tbs_sha256"`
+	Domains          []string    `json:"dns_names"`
+	PubKeySHA256     string      `json:"pubkey_sha256"`
+	Issuer           Issuer      `json:"issuer"`
+	NotBefore        string      `json:"not_before"`
+	NotAfter         string      `json:"not_after"`
+	Cert             Certificate `json:"cert"` // deprecated
+	CertDER          string      `json:"cert_der"`
+	CertSHA256       string      `json:"cert_sha256"`
+	ProblemReporting string      `json:"problem_reporting"`
+	Revoked          bool        `json:"revoked"`
+	Revocation       Revocation  `json:"revocation"`
 }
 
 // Issuer represents an issuer object for the certspotter API.
 type Issuer struct {
-	Name         string `json:"name"`
-	PubKeySHA256 string `json:"pubkey_sha256"`
+	Name         string   `json:"name"`
+	PubKeySHA256 string   `json:"pubkey_sha256"`
+	FriendlyName string   `json:"friendly_name"`
+	Website      string   `json:"website"`
+	CAADomains   []string `json:"caa_domains"`
+	Operator     Operator `json:"operator"`
 }
 
 // Certificate represents a certificate object for the certspotter API.
+// This is now deprecated and Issuance.CertDER and Issuance.CertSHA256 should be used instead.
 type Certificate struct {
 	Type   string `json:"type"`
 	SHA256 string `json:"sha256"`
 	Data   string `json:"data"`
+}
+
+// Revocation represents a revocation object for the certspotter API.
+type Revocation struct {
+	Time      string `json:"time"`
+	Reason    *int   `json:"reason"`
+	CheckedAt string `json:"checked_at"`
+}
+
+// Operator represents an operator object for the certspotter API.
+type Operator struct {
+	Name    string `json:"name"`
+	Website string `json:"website"`
 }
 
 func (c *CertspotterClient) getQueryParams(domain string, matchWildcards, includeSubdomains bool, position uint64) string {
