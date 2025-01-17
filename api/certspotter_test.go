@@ -2,7 +2,7 @@ package api
 
 import (
 	"errors"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"reflect"
 	"strings"
@@ -20,7 +20,7 @@ func (c MockClient) Do(req *http.Request) (*http.Response, error) {
 		Proto:      "HTTP/1.1",
 		ProtoMajor: 1,
 		ProtoMinor: 1,
-		Body:       ioutil.NopCloser(strings.NewReader(c.Content)),
+		Body:       io.NopCloser(strings.NewReader(c.Content)),
 	}
 	return res, nil
 }
@@ -48,7 +48,7 @@ func TestGetQueryParams(t *testing.T) {
 			wildcard:  false,
 			subdomain: false,
 			position:  0,
-			expected:  "?expand=dns_names&expand=issuer&expand=cert&domain=example.com",
+			expected:  "?expand=dns_names&expand=issuer&expand=cert&expand=pubkey&domain=example.com",
 		},
 		{
 			title:     "testGetQueryParams_WildcardOnly",
@@ -56,7 +56,7 @@ func TestGetQueryParams(t *testing.T) {
 			wildcard:  true,
 			subdomain: false,
 			position:  0,
-			expected:  "?expand=dns_names&expand=issuer&expand=cert&domain=example.com&match_wildcards=true",
+			expected:  "?expand=dns_names&expand=issuer&expand=cert&expand=pubkey&domain=example.com&match_wildcards=true",
 		},
 		{
 			title:     "testGetQueryParams_SubdomainOnly",
@@ -64,7 +64,7 @@ func TestGetQueryParams(t *testing.T) {
 			wildcard:  false,
 			subdomain: true,
 			position:  0,
-			expected:  "?expand=dns_names&expand=issuer&expand=cert&domain=example.com&include_subdomains=true",
+			expected:  "?expand=dns_names&expand=issuer&expand=cert&expand=pubkey&domain=example.com&include_subdomains=true",
 		},
 		{
 			title:     "testGetQueryParams_WithPosition",
@@ -72,7 +72,7 @@ func TestGetQueryParams(t *testing.T) {
 			wildcard:  false,
 			subdomain: false,
 			position:  1234567,
-			expected:  "?expand=dns_names&expand=issuer&expand=cert&domain=example.com&after=1234567",
+			expected:  "?expand=dns_names&expand=issuer&expand=cert&expand=pubkey&domain=example.com&after=1234567",
 		},
 		{
 			title:     "testGetQueryParams_All",
@@ -80,7 +80,7 @@ func TestGetQueryParams(t *testing.T) {
 			wildcard:  true,
 			subdomain: true,
 			position:  1234567,
-			expected:  "?expand=dns_names&expand=issuer&expand=cert&domain=example.com&after=1234567&match_wildcards=true&include_subdomains=true",
+			expected:  "?expand=dns_names&expand=issuer&expand=cert&expand=pubkey&domain=example.com&after=1234567&match_wildcards=true&include_subdomains=true",
 		},
 	}
 
@@ -140,6 +140,7 @@ func TestGetIssuancesWithResult(t *testing.T) {
 				"cert_sha256":"20cbc0d1e87ed1d71d3b84533667ef60f22fffee634108711376dec87a38d4e2",
 				"dns_names":["certs.sandbox.sslmate.com","certs.sslmate.com","sandbox.sslmate.com","sslmate.com","www.sslmate.com"],
 				"pubkey_sha256":"1b1cebcd061ba39746a477db7b90d6871d648bd293ef50e053a6c54c5c3ac112",
+				"pubkey":{"type":"rsa","bit_length":2048},
 				"issuer":{
 					"friendly_name":"Sectigo",
 					"website":"https://sectigo.com/",
@@ -175,6 +176,10 @@ func TestGetIssuancesWithResult(t *testing.T) {
 				"www.sslmate.com",
 			},
 			PubKeySHA256: "1b1cebcd061ba39746a477db7b90d6871d648bd293ef50e053a6c54c5c3ac112",
+			PubKey: PubKey{
+				Type: "rsa",
+				BitLength: 2048,
+			},
 			Issuer: Issuer{
 				Name:         "C=GB, ST=Greater Manchester, L=Salford, O=Sectigo Limited, CN=Sectigo RSA Domain Validation Secure Server CA",
 				PubKeySHA256: "e1ae9c3de848ece1ba72e0d991ae4d0d9ec547c6bad1dddab9d6beb0a7e0e0d8",
