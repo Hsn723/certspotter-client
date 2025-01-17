@@ -1,9 +1,10 @@
+version: 2
 project_name: certspotter-client
 before:
   hooks:
     - go mod download
-build:
-  skip: true
+builds:
+  - skip: true
 changelog:
   use: github-native
 release:

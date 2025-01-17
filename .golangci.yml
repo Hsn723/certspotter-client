@@ -6,6 +6,5 @@ linters:
       - gocyclo
       - godot
       - gofmt
-      - golint
       - typecheck
       - unparam
