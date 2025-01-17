@@ -6,25 +6,25 @@ on:
     tags-ignore:
       - '*'
 env:
-  go-version: 1.18
+  go-version: stable
 jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4.5.0
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
       - name: Lint
-        uses: pre-commit/action@v3.0.0
+        uses: pre-commit/action@v3.0.1
         with:
           extra_args: --all-files
   verify:
     name: Verify
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: ${{ env.go-version }}
       - name: Verify
@@ -33,9 +33,9 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: ${{ env.go-version }}
       - name: Test
@@ -45,25 +45,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Setup go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: ${{ env.go-version }}
       - name: GoReleaser
-        uses: goreleaser/goreleaser-action@v4
+        uses: goreleaser/goreleaser-action@v6
         with:
           version: latest
-          args: --snapshot --skip-publish --rm-dist
+          args: --snapshot --skip=sign,publish --clean
   tag:
     name: Tag release
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     needs: [lint, verify, test, dry-run]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           token: ${{ secrets.PAT }}
       - name: Tag release

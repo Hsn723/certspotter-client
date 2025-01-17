@@ -3,14 +3,14 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"github.com/asaskevich/govalidator"
 )
 
 const (
-	defaultParams = "?expand=dns_names&expand=issuer&expand=cert"
+	defaultParams = "?expand=dns_names&expand=issuer&expand=cert&expand=pubkey"
 )
 
 var (
@@ -44,6 +44,7 @@ type Issuance struct {
 	ProblemReporting string      `json:"problem_reporting"`
 	Revoked          bool        `json:"revoked"`
 	Revocation       Revocation  `json:"revocation"`
+	PubKey           PubKey       `json:"pubkey"`
 }
 
 // Issuer represents an issuer object for the certspotter API.
@@ -75,6 +76,13 @@ type Revocation struct {
 type Operator struct {
 	Name    string `json:"name"`
 	Website string `json:"website"`
+}
+
+// PubKey represents a pubkey object for the certspotter API.
+type PubKey struct {
+	Type      string `json:"type"`
+	BitLength int    `json:"bit_length,omitempty"`
+	Curve     string `json:"curve,omitempty"`
 }
 
 func (c *CertspotterClient) getQueryParams(domain string, matchWildcards, includeSubdomains bool, position uint64) string {
@@ -114,7 +122,7 @@ func (c *CertspotterClient) get(queryParams string) ([]byte, error) {
 	if res.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("undocumented status code returned by the Cert Spotter API: %d", res.StatusCode)
 	}
-	return ioutil.ReadAll(res.Body)
+	return io.ReadAll(res.Body)
 }
 
 // GetIssuances queries the certspotter API for new issuances.
