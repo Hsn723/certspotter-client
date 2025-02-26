@@ -44,7 +44,7 @@ type Issuance struct {
 	ProblemReporting string      `json:"problem_reporting"`
 	Revoked          bool        `json:"revoked"`
 	Revocation       Revocation  `json:"revocation"`
-	PubKey           PubKey       `json:"pubkey"`
+	PubKey           PubKey      `json:"pubkey"`
 }
 
 // Issuer represents an issuer object for the certspotter API.
